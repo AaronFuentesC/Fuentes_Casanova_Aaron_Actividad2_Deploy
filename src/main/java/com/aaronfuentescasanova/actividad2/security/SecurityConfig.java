@@ -4,6 +4,7 @@ import com.aaronfuentescasanova.actividad2.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -59,8 +60,21 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/h2-console/**").permitAll()
+
+                        // Aulas
+                        .requestMatchers(HttpMethod.GET, "/aulas/**").hasAnyRole("ADMIN", "PROFESOR")
+                        .requestMatchers("/aulas/**").hasRole("ADMIN")
+
+                        // Reservas
+                        .requestMatchers(HttpMethod.GET, "/reservas/**").hasAnyRole("ADMIN", "PROFESOR")
+                        .requestMatchers(HttpMethod.POST, "/reservas/**").hasAnyRole("ADMIN", "PROFESOR")
+                        .requestMatchers(HttpMethod.DELETE, "/reservas/**").hasRole("ADMIN")
+
+                        // Usuarios
+                        .requestMatchers("/usuario/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

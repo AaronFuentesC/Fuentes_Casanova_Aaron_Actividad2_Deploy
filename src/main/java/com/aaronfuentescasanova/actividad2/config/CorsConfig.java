@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://fuentes-casanova-aaron-actividad2-deploy.onrender.com/") // <-- PON AQUÍ LA URL DE RENDER
+                        .allowedOrigins("https://fuentes-casanova-aaron-actividad2-deploy.onrender.com") // <-- PON AQUÍ LA URL DE RENDER
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
